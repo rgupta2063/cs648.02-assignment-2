@@ -1,2 +1,2 @@
-# cs648.02-assignment-2
- React Components & React state
+# assignment 2
+React Components and React State Module2
