@@ -1,5 +1,5 @@
 table.bordered-table th,td {border: 2px solid black; padding: 10px;width: 460px;}
-table.bordered-table {border-collapse:collapse;}
+table.bordered-table {border-collapse:collapse; text-align: left;}
 
 .form-container{
     width: 100%;
@@ -12,12 +12,13 @@ table.bordered-table {border-collapse:collapse;}
     font-size: 20px;
 }
 
-p {font-size: 20px;}
+p {font-weight: bold; font-size: 20px;}
 
 input{
     width: 50%;
     padding: 12px 20px;
-    margin: 8px 0;   
+    margin: 8px 0;  
+    font-size: medium; 
 }
 select{
     font-size: 20px;

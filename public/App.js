@@ -30,21 +30,14 @@ class ProductInventory extends React.Component {
   render() {
     return React.createElement(React.Fragment, null, React.createElement("h1", null, "My Company Inventory"), React.createElement(ProductTable, {
       products: this.state.products
-    }), React.createElement(ProductAdd, {
+    }), React.createElement("br", null), React.createElement(ProductAdd, {
       createProduct: this.createProduct
     }));
   }
 
-} // class ProductDisplay extends React.Component{
-//     render(){
-//         return(
-//         );
-//     }
-// }
+}
 
-
-const initialproducts = []; // class ProductTable extends React.Component{
-//     render(){  
+const initialproducts = [];
 
 function ProductTable(props) {
   const productRows = props.products.map((product, index) => React.createElement(ProductRow, {
@@ -54,41 +47,48 @@ function ProductTable(props) {
   return React.createElement("div", null, React.createElement("p", null, "Showing all available products"), React.createElement("hr", null), React.createElement("table", {
     className: "bordered-table"
   }, React.createElement("thead", null, React.createElement("tr", null, React.createElement("th", null, "Product Name"), React.createElement("th", null, "Price"), React.createElement("th", null, "Category"), React.createElement("th", null, "Image"))), React.createElement("tbody", null, productRows)));
-} // }
-// class ProductRow extends React.Component{
-//     render(){
-
+}
 
 function ProductRow(props) {
   const product = props.product;
-  return React.createElement("tr", null, React.createElement("td", null, product.name), React.createElement("td", null, product.price), React.createElement("td", null, product.category), React.createElement("td", null, React.createElement("a", {
+  return React.createElement("tr", null, React.createElement("td", null, product.name), React.createElement("td", null, "$", product.price), React.createElement("td", null, product.category), React.createElement("td", null, React.createElement("a", {
     href: product.image,
     target: "_blank"
   }, "View")));
-} // }
-
+}
 
 class ProductAdd extends React.Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      price: '$'
+    };
+    this.handlepriceChange = this.handlepriceChange.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const form = document.forms.productAdd;
+    const priceChange = form.price.value.replace('$', '');
     const product = {
       category: form.category.value,
-      price: form.price.value,
+      price: priceChange,
       name: form.name.value,
       image: form.image.value
     };
     this.props.createProduct(product);
-    form.price.value = "", form.name.value = "", form.image.value = "", form.category.value = "";
+    form.price.value = "$", form.name.value = "", form.image.value = "", form.category.value = "";
+  }
+
+  handlepriceChange() {
+    this.setState({
+      price: document.forms.productAdd.price.value
+    });
   }
 
   render() {
-    return React.createElement("div", null, React.createElement("p", null, "Add a new product to inventory"), React.createElement("hr", null), React.createElement("form", {
+    return React.createElement(React.Fragment, null, React.createElement("p", null, "Add a new product to inventory"), React.createElement("hr", null), React.createElement("form", {
       name: "productAdd",
       onSubmit: this.handleSubmit
     }, React.createElement("div", {
@@ -100,7 +100,7 @@ class ProductAdd extends React.Component {
       className: "category"
     }, React.createElement("option", {
       value: "shirt"
-    }, "Shirt"), React.createElement("option", {
+    }, "Shirts"), React.createElement("option", {
       value: "Jeans"
     }, "Jeans"), React.createElement("option", {
       value: "Jackets"
@@ -115,7 +115,9 @@ class ProductAdd extends React.Component {
       className: "form-col"
     }, "Price Per Unit ", React.createElement("br", null), React.createElement("input", {
       type: "text",
-      name: "price"
+      name: "price",
+      defaultValue: this.state.price,
+      onChange: this.handlepriceChange
     }), React.createElement("br", null), "Image URL", React.createElement("br", null), React.createElement("input", {
       type: "url",
       name: "image"

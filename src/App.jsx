@@ -24,31 +24,15 @@ class ProductInventory extends React.Component{
         return(
             <React.Fragment>
             <h1>My Company Inventory</h1>
-            {/* <ProductDisplay/>
-            <hr/> */}
             <ProductTable products={this.state.products}/>
-            
+            <br></br>
             <ProductAdd createProduct={this.createProduct}/>
             </React.Fragment>
         );
     }
 }
-
-// class ProductDisplay extends React.Component{
-//     render(){
-//         return(
-            
-//         );
-//     }
-// }
-
-
 const initialproducts = [];
-
-
-// class ProductTable extends React.Component{
-    
-//     render(){  
+ 
 function ProductTable(props){
         const productRows = props.products.map((product,index)=><ProductRow key={index} product={product}/>);
         return(
@@ -66,23 +50,18 @@ function ProductTable(props){
                 </thead>
                 <tbody>
                     {productRows}
-                </tbody>
-                
+                </tbody>                
             </table>
             </div>      
         );
     }
-// }
 
-// class ProductRow extends React.Component{
-
-//     render(){
 function ProductRow(props){        
         const product = props.product;
         return(
             <tr>
                 <td>{product.name}</td>
-                <td>{product.price}</td>
+                <td>${product.price}</td>
                 <td>{product.category}</td>
                 <td>
                     <a href={product.image} target="_blank">View</a>
@@ -90,25 +69,38 @@ function ProductRow(props){
             </tr>
         );
     }
-// }
+
 
 class ProductAdd extends React.Component{
     constructor(){
         super();
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = { price: '$' }
+        this.handlepriceChange = this.handlepriceChange.bind(this);
     }
 
     handleSubmit(e){
         e.preventDefault();
         const form = document.forms.productAdd;
-        const product = {category:form.category.value, price:form.price.value,
-                        name:form.name.value, image:form.image.value}
+        const priceChange = form.price.value.replace('$','');
+        const product = {category:form.category.value, 
+                         price:priceChange,
+                         name:form.name.value, 
+                         image:form.image.value};
+
         this.props.createProduct(product);
-        form.price.value="", form.name.value="",form.image.value="",form.category.value="";
+        form.price.value="$", form.name.value="",form.image.value="",form.category.value="";
+        
     }
+
+    handlepriceChange(){
+        this.setState({price: document.forms.productAdd.price.value})
+    }
+
+
     render(){
         return(
-            <div>
+            <React.Fragment>
                 <p>Add a new product to inventory</p>
                 <hr/>
                 <form name='productAdd' onSubmit={this.handleSubmit}> 
@@ -116,7 +108,7 @@ class ProductAdd extends React.Component{
                         <div className="form-col">
                             Category<br/>
                             <select name='category' className="category">
-                                <option value='shirt'>Shirt</option>
+                                <option value='shirt'>Shirts</option>
                                 <option value='Jeans'>Jeans</option>
                                 <option value='Jackets'>Jackets</option>
                                 <option value='sweaters'>Sweaters</option>
@@ -128,16 +120,16 @@ class ProductAdd extends React.Component{
                         </div> 
                         <div className="form-col"> 
                             Price Per Unit <br/>
-                            <input type='text' name='price'/>
+                            <input type='text' name='price' defaultValue={this.state.price}
+                                    onChange={this.handlepriceChange}/>
                             <br/>                  
                             Image URL<br/>
                             <input type='url' name='image'/>
                         </div>  
                     </div>    
-                    <button>Add Product</button>
-            
+                    <button>Add Product</button>            
                 </form>
-            </div> 
+            </React.Fragment> 
         );
     }
 }
