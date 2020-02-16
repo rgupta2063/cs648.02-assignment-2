@@ -82,15 +82,13 @@ class ProductAdd extends React.Component{
     handleSubmit(e){
         e.preventDefault();
         const form = document.forms.productAdd;
-        const priceChange = form.price.value.replace('$','');
         const product = {category:form.category.value, 
-                         price:priceChange,
+                         price:form.price.value.replace('$',''),
                          name:form.name.value, 
                          image:form.image.value};
 
         this.props.createProduct(product);
-        form.price.value="$", form.name.value="",form.image.value="",form.category.value="";
-        
+        form.price.value="$", form.name.value="",form.image.value="",form.category.value="";    
     }
 
     handlepriceChange(){
